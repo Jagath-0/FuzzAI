@@ -130,22 +130,22 @@ body {
 
 /* Mode Tabs */
 .mode-tabs {
-  display: flex; gap: 0.25rem;
+  display: flex; gap: 0.5rem;
   background: var(--bg-glass);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 0.25rem;
+  border-radius: var(--radius-lg);
+  padding: 0.4rem;
 }
 .tab-btn {
-  padding: 0.4rem 1.1rem;
+  padding: 0.6rem 1.4rem;
   border: none; cursor: pointer;
-  border-radius: calc(var(--radius-md) - 4px);
+  border-radius: var(--radius-md);
   font-family: var(--font-sans);
-  font-size: 0.85rem; font-weight: 500;
+  font-size: 0.95rem; font-weight: 600;
   color: var(--text-muted);
   background: transparent;
   transition: all 0.2s ease;
-  display: flex; align-items: center; gap: 0.4rem;
+  display: flex; align-items: center; gap: 0.5rem;
 }
 .tab-btn:hover { color: var(--text-primary); background: var(--bg-glass-2); }
 .tab-btn.active {
@@ -189,17 +189,44 @@ body {
    MAIN LAYOUT
    ============================================= */
 .app-layout {
-  display: grid;
-  grid-template-rows: 1fr 220px;
+  display: flex;
+  flex-direction: column;
   height: calc(100vh - var(--header-h));
+  padding: 2.5rem;
+}
+
+.page-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#page-config {
+  align-items: center;
+  justify-content: center;
+}
+#page-config .panel-left {
+  width: 100%;
+  max-width: 900px;
+  height: 70vh;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  border: 1px solid rgba(124,106,255,0.2);
+  background: rgba(15,19,32,0.85);
+  backdrop-filter: blur(20px);
 }
 
 .panels-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex: 1;
+  min-height: 0;
 }
 
 /* =============================================
@@ -207,13 +234,12 @@ body {
    ============================================= */
 .panel-left {
   display: flex; flex-direction: column;
-  border-right: 1px solid var(--border);
   overflow: hidden;
 }
 
 .panel-header {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0.75rem 1.25rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border);
   background: var(--bg-glass);
   flex-shrink: 0;
@@ -236,9 +262,9 @@ body {
   border: none; outline: none; resize: none;
   color: #c9d1d9;
   font-family: var(--font-mono);
-  font-size: 0.82rem;
-  line-height: 1.7;
-  padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  padding: 1.5rem 1.5rem 1.5rem 3.5rem;
   tab-size: 4;
   caret-color: var(--accent);
   transition: background 0.2s;
