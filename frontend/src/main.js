@@ -17,6 +17,10 @@ let severityChart = null;
 
 // ─── App Shell ────────────────────────────────────
 document.querySelector('#app').innerHTML = `
+  <div class="cyber-grid"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  
   <header class="header">
     <div class="header-left">
       <a class="logo" href="#">
