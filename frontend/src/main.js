@@ -84,37 +84,38 @@ document.querySelector('#app').innerHTML = `
         <button id="btn-back" style="padding:0.5rem 1rem;font-size:0.85rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-muted);border-radius:4px;cursor:pointer;transition:all 0.2s;">⬅ New Scan</button>
       </div>
       
-      <div style="display:grid; grid-template-columns: 350px 1fr; gap:1.5rem; flex:1; min-height:0;">
-        <!-- LEFT COLUMN: Dashboard -->
-        <div style="display:flex; flex-direction:column; gap:1.5rem; min-height:0; overflow:hidden;">
-          <div class="chart-panel" style="flex:1; display:flex; flex-direction:column;">
-            <div class="chart-panel-header">
-              <span class="chart-panel-title">🎯 Severity Breakdown</span>
-              <div class="severity-legend">
-                <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Critical</div>
-                <div class="legend-item"><div class="legend-dot" style="background:#eab308"></div>Medium</div>
-                <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Low</div>
-              </div>
-            </div>
-            <div style="flex:1; display:flex; align-items:center; justify-content:center; padding: 1rem;">
-              <div style="position:relative; width:220px; height:220px; min-height:220px; min-width:220px;">
-                <canvas id="severity-chart"></canvas>
-              </div>
+      <div style="display:grid; grid-template-columns: 320px 280px 1fr; gap:1.5rem; flex:1; min-height:0;">
+        
+        <!-- COLUMN 1: Chart -->
+        <div class="chart-panel" style="display:flex; flex-direction:column; overflow:hidden;">
+          <div class="chart-panel-header">
+            <span class="chart-panel-title">🎯 Severity Breakdown</span>
+            <div class="severity-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Critical</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#eab308"></div>Medium</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Low</div>
             </div>
           </div>
+          <div style="flex:1; display:flex; align-items:center; justify-content:center; padding: 1rem;">
+            <div style="position:relative; width:220px; height:220px; min-height:220px; min-width:220px;">
+              <canvas id="severity-chart"></canvas>
+            </div>
+          </div>
+        </div>
           
-          <div class="action-panel">
-            <div class="action-panel-title">📊 Summary</div>
-            <div class="summary-box">
-              <div class="summary-row"><span class="summary-key">Total Inputs</span><span class="summary-val" id="sum-total">—</span></div>
-              <div class="summary-row"><span class="summary-key">Crashes</span><span class="summary-val" id="sum-crashes" style="color:var(--red)">—</span></div>
-              <div class="summary-row"><span class="summary-key">Critical 🔴</span><span class="summary-val" id="sum-critical" style="color:var(--red)">—</span></div>
-              <div class="summary-row"><span class="summary-key">Medium 🟡</span><span class="summary-val" id="sum-medium" style="color:var(--yellow)">—</span></div>
-              <div class="summary-row"><span class="summary-key">Low 🟢</span><span class="summary-val" id="sum-low" style="color:var(--green)">—</span></div>
-            </div>
-            <button class="btn-export primary" id="btn-pdf" disabled>📄 Export PDF Report</button>
-            <button class="btn-export" id="btn-json" disabled>⬇ Download JSON</button>
+        <!-- COLUMN 2: Summary & Export -->
+        <div class="action-panel" style="display:flex; flex-direction:column; justify-content:flex-start;">
+          <div class="action-panel-title">📊 Summary</div>
+          <div class="summary-box">
+            <div class="summary-row"><span class="summary-key">Total Inputs</span><span class="summary-val" id="sum-total">—</span></div>
+            <div class="summary-row"><span class="summary-key">Crashes</span><span class="summary-val" id="sum-crashes" style="color:var(--red)">—</span></div>
+            <div class="summary-row"><span class="summary-key">Critical 🔴</span><span class="summary-val" id="sum-critical" style="color:var(--red)">—</span></div>
+            <div class="summary-row"><span class="summary-key">Medium 🟡</span><span class="summary-val" id="sum-medium" style="color:var(--yellow)">—</span></div>
+            <div class="summary-row"><span class="summary-key">Low 🟢</span><span class="summary-val" id="sum-low" style="color:var(--green)">—</span></div>
           </div>
+          <div style="flex:1;"></div>
+          <button class="btn-export primary" id="btn-pdf" disabled style="margin-top:1rem;">📄 Export PDF Report</button>
+          <button class="btn-export" id="btn-json" disabled>⬇ Download JSON</button>
         </div>
 
         <!-- RIGHT COLUMN: Live Feed -->
