@@ -1,11 +1,11 @@
 // FuzzAI — Main Application
-import { Chart, ArcElement, Tooltip, Legend, DoughnutController } from 'chart.js';
+import { Chart, ArcElement, Tooltip, Legend, PieController } from 'chart.js';
 import { clearFeed, addFeedItem } from './feed.js';
 import { showToast } from './toast.js';
 import { openModal, initModal } from './modal.js';
 import { generatePdf } from './pdf.js';
 
-Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
+Chart.register(ArcElement, Tooltip, Legend, PieController);
 
 export const API_BASE = 'http://localhost:8000';
 
@@ -118,7 +118,7 @@ document.querySelector('#app').innerHTML = `
         </div>
 
         <!-- RIGHT COLUMN: Live Feed -->
-        <div class="panel-right" style="width:100%;">
+        <div class="panel-right" style="width:100%; min-height:0;">
           <div class="panel-header">
             <span class="panel-title"><span>📡</span> Live Feed</span>
             <span style="font-size:0.72rem;color:var(--text-muted)" id="feed-label">Waiting for run…</span>
@@ -252,7 +252,7 @@ async function checkBackend() {
 function initChart() {
   const ctx = document.getElementById('severity-chart').getContext('2d');
   severityChart = new Chart(ctx, {
-    type: 'doughnut',
+    type: 'pie',
     data: {
       labels: ['Critical 🔴', 'Medium 🟡', 'Low 🟢'],
       datasets: [{
@@ -266,7 +266,6 @@ function initChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: '70%',
       circumference: 360,
       rotation: 0,
       plugins: {
