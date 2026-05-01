@@ -87,7 +87,7 @@ document.querySelector('#app').innerHTML = `
       <div style="display:grid; grid-template-columns: 350px 1fr; gap:1.5rem; flex:1; min-height:0;">
         <!-- LEFT COLUMN: Dashboard -->
         <div style="display:flex; flex-direction:column; gap:1.5rem; min-height:0; overflow:hidden;">
-          <div class="chart-panel" style="flex:1;">
+          <div class="chart-panel" style="flex:1; display:flex; flex-direction:column;">
             <div class="chart-panel-header">
               <span class="chart-panel-title">🎯 Severity Breakdown</span>
               <div class="severity-legend">
@@ -96,8 +96,8 @@ document.querySelector('#app').innerHTML = `
                 <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Low</div>
               </div>
             </div>
-            <div style="flex:1; display:flex; align-items:center; justify-content:center; width:100%; min-height:220px;">
-              <div style="position:relative; width:220px; height:220px;">
+            <div style="flex:1; display:flex; align-items:center; justify-content:center; padding: 1rem;">
+              <div style="position:relative; width:100%; max-width:220px; aspect-ratio:1;">
                 <canvas id="severity-chart"></canvas>
               </div>
             </div>
@@ -266,7 +266,7 @@ function initChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: '65%',
+      cutout: '70%',
       plugins: {
         legend: { display: false },
         tooltip: {
