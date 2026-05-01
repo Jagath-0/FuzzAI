@@ -41,9 +41,8 @@ document.querySelector('#app').innerHTML = `
   </header>
 
   <div class="app-layout">
-    <div class="panels-row">
-
-      <!-- LEFT PANEL -->
+    <!-- PAGE 1: CONFIG -->
+    <div id="page-config" class="page-view active">
       <div class="panel-left">
         <div class="panel-header">
           <span class="panel-title" id="input-panel-title"><span>⚡</span> Python Function</span>
@@ -76,9 +75,17 @@ document.querySelector('#app').innerHTML = `
           </button>
         </div>
       </div>
+    </div>
 
+    <!-- PAGE 2: RESULTS -->
+    <div id="page-results" class="page-view" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:-0.5rem;">
+        <h2 style="font-size:1.25rem;font-weight:600;"><span style="color:var(--accent-light);">⚡</span> Scan Results</h2>
+        <button id="btn-back" style="padding:0.5rem 1rem;font-size:0.85rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-muted);border-radius:4px;cursor:pointer;transition:all 0.2s;">⬅ New Scan</button>
+      </div>
+      <div class="panels-row" style="flex:1;">
       <!-- RIGHT PANEL -->
-      <div class="panel-right">
+      <div class="panel-right" style="width:100%;">
         <div class="panel-header">
           <span class="panel-title"><span>📡</span> Live Feed</span>
           <span style="font-size:0.72rem;color:var(--text-muted)" id="feed-label">Waiting for run…</span>
@@ -138,6 +145,7 @@ document.querySelector('#app').innerHTML = `
         <button class="btn-export primary" id="btn-pdf" disabled>📄 Export PDF Report</button>
         <button class="btn-export" id="btn-json" disabled>⬇ Download JSON</button>
       </div>
+      </div>
     </div>
   </div>
 
@@ -185,6 +193,16 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
       isApi ? '<span>🌐</span> API Endpoint' : '<span>⚡</span> Python Function';
     validateRunButton();
   });
+});
+
+// ─── Page Switching ────────────────────────────────
+function showPage(pageId) {
+  document.querySelectorAll('.page-view').forEach(p => p.style.display = 'none');
+  document.getElementById(pageId).style.display = 'flex';
+}
+document.getElementById('btn-back').addEventListener('click', () => {
+  setRunning(false); // Make sure fuzzer stops logically if it was running
+  showPage('page-config');
 });
 
 // ─── Clear ─────────────────────────────────────────
@@ -342,6 +360,9 @@ document.getElementById('btn-run').addEventListener('click', async () => {
   setRunning(true);
   clearFeed();
   setProgress(0);
+  
+  // Transition to results page
+  showPage('page-results');
   
   // Clear previous results
   updateDashboard([]);
