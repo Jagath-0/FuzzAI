@@ -97,7 +97,7 @@ document.querySelector('#app').innerHTML = `
               </div>
             </div>
             <div style="flex:1; display:flex; align-items:center; justify-content:center; padding: 1rem;">
-              <div style="position:relative; width:100%; max-width:220px; aspect-ratio:1;">
+              <div style="position:relative; width:220px; height:220px; min-height:220px; min-width:220px;">
                 <canvas id="severity-chart"></canvas>
               </div>
             </div>
@@ -267,6 +267,8 @@ function initChart() {
       responsive: true,
       maintainAspectRatio: false,
       cutout: '70%',
+      circumference: 360,
+      rotation: 0,
       plugins: {
         legend: { display: false },
         tooltip: {
