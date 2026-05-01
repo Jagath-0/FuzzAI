@@ -96,8 +96,10 @@ document.querySelector('#app').innerHTML = `
                 <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Low</div>
               </div>
             </div>
-            <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-              <div class="chart-wrap" style="position:relative; height:180px; width:180px;"><canvas id="severity-chart"></canvas></div>
+            <div style="flex:1; display:flex; align-items:center; justify-content:center; width:100%; min-height:220px;">
+              <div style="position:relative; width:220px; height:220px;">
+                <canvas id="severity-chart"></canvas>
+              </div>
             </div>
           </div>
           
