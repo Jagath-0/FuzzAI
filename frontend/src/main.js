@@ -14,6 +14,7 @@ export let currentMode = 'code';
 export let isRunning   = false;
 export let resultsData = [];
 let severityChart = null;
+let currentAbortController = null;
 
 // ─── App Shell ────────────────────────────────────
 document.querySelector('#app').innerHTML = `
@@ -208,6 +209,10 @@ function showPage(pageId) {
   document.getElementById(pageId).style.display = 'flex';
 }
 document.getElementById('btn-back').addEventListener('click', () => {
+  if (currentAbortController) {
+    currentAbortController.abort();
+    currentAbortController = null;
+  }
   setRunning(false); // Make sure fuzzer stops logically if it was running
   showPage('page-config');
 });
@@ -365,6 +370,11 @@ document.getElementById('btn-run').addEventListener('click', async () => {
   const count = parseInt(document.getElementById('fuzz-count').value, 10);
   const aiExplain = document.getElementById('ai-toggle').checked;
   
+  if (currentAbortController) {
+    currentAbortController.abort();
+  }
+  currentAbortController = new AbortController();
+  
   setRunning(true);
   clearFeed();
   setProgress(0);
@@ -385,7 +395,8 @@ document.getElementById('btn-run').addEventListener('click', async () => {
     const res = await fetch(`${API_BASE}${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(bodyPayload)
+      body: JSON.stringify(bodyPayload),
+      signal: currentAbortController.signal
     });
 
     if (!res.ok) throw new Error(`Server returned ${res.status}`);
@@ -429,8 +440,12 @@ document.getElementById('btn-run').addEventListener('click', async () => {
     showToast(`✅ Fuzzing complete: ${results.length} inputs tested.`, 'success');
     
   } catch (err) {
-    showToast(`❌ Error: ${err.message}`, 'error');
-    console.error(err);
+    if (err.name === 'AbortError') {
+      console.log('Scan aborted by user.');
+    } else {
+      showToast(`❌ Error: ${err.message}`, 'error');
+      console.error(err);
+    }
   } finally {
     setRunning(false);
   }
