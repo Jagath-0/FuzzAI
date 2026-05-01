@@ -96,7 +96,9 @@ document.querySelector('#app').innerHTML = `
                 <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Low</div>
               </div>
             </div>
-            <div class="chart-wrap" style="height:200px; display:flex; align-items:center; justify-content:center;"><canvas id="severity-chart"></canvas></div>
+            <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+              <div class="chart-wrap" style="position:relative; height:180px; width:180px;"><canvas id="severity-chart"></canvas></div>
+            </div>
           </div>
           
           <div class="action-panel">

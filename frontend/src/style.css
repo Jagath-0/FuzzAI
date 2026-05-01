@@ -460,13 +460,11 @@ body {
 .chart-panel-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
 .chart-wrap { 
   position: relative; 
-  height: 150px;
+  height: 100%;
   width: 100%;
-  margin: 0 auto;
 }
 .chart-wrap canvas {
-  height: 150px !important;
-  width: 100% !important;
+  /* Let Chart.js handle sizing natively based on the parent wrapper */
 }
 
 /* Severity legend */
