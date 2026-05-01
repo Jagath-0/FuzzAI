@@ -79,72 +79,74 @@ document.querySelector('#app').innerHTML = `
 
     <!-- PAGE 2: RESULTS -->
     <div id="page-results" class="page-view" style="display:none;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:-0.5rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:-0.5rem; flex-shrink:0;">
         <h2 style="font-size:1.25rem;font-weight:600;"><span style="color:var(--accent-light);">⚡</span> Scan Results</h2>
         <button id="btn-back" style="padding:0.5rem 1rem;font-size:0.85rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-muted);border-radius:4px;cursor:pointer;transition:all 0.2s;">⬅ New Scan</button>
       </div>
-      <div class="panels-row" style="flex:1;">
-      <!-- RIGHT PANEL -->
-      <div class="panel-right" style="width:100%;">
-        <div class="panel-header">
-          <span class="panel-title"><span>📡</span> Live Feed</span>
-          <span style="font-size:0.72rem;color:var(--text-muted)" id="feed-label">Waiting for run…</span>
-        </div>
-        <div class="stats-bar">
-          <div class="stat-chip total">
-            <span class="stat-value" id="stat-total">0</span>
-            <span class="stat-label">Total</span>
+      
+      <div style="display:grid; grid-template-columns: 350px 1fr; gap:1.5rem; flex:1; min-height:0;">
+        <!-- LEFT COLUMN: Dashboard -->
+        <div style="display:flex; flex-direction:column; gap:1.5rem; min-height:0; overflow:hidden;">
+          <div class="chart-panel" style="flex:1;">
+            <div class="chart-panel-header">
+              <span class="chart-panel-title">🎯 Severity Breakdown</span>
+              <div class="severity-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Critical</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#eab308"></div>Medium</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Low</div>
+              </div>
+            </div>
+            <div class="chart-wrap" style="height:200px; display:flex; align-items:center; justify-content:center;"><canvas id="severity-chart"></canvas></div>
           </div>
-          <div class="stat-chip passes">
-            <span class="stat-value" id="stat-passes">0</span>
-            <span class="stat-label">Passes ✅</span>
-          </div>
-          <div class="stat-chip crashes">
-            <span class="stat-value" id="stat-crashes">0</span>
-            <span class="stat-label">Crashes 💥</span>
-          </div>
-          <div class="stat-chip rate">
-            <span class="stat-value" id="stat-rate">0%</span>
-            <span class="stat-label">Crash Rate</span>
-          </div>
-        </div>
-        <div class="progress-wrap">
-          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-        </div>
-        <div class="feed-container" id="feed-container">
-          <div class="feed-empty">
-            <div class="feed-empty-icon">📭</div>
-            <p>Run the fuzzer to see live results here</p>
+          
+          <div class="action-panel">
+            <div class="action-panel-title">📊 Summary</div>
+            <div class="summary-box">
+              <div class="summary-row"><span class="summary-key">Total Inputs</span><span class="summary-val" id="sum-total">—</span></div>
+              <div class="summary-row"><span class="summary-key">Crashes</span><span class="summary-val" id="sum-crashes" style="color:var(--red)">—</span></div>
+              <div class="summary-row"><span class="summary-key">Critical 🔴</span><span class="summary-val" id="sum-critical" style="color:var(--red)">—</span></div>
+              <div class="summary-row"><span class="summary-key">Medium 🟡</span><span class="summary-val" id="sum-medium" style="color:var(--yellow)">—</span></div>
+              <div class="summary-row"><span class="summary-key">Low 🟢</span><span class="summary-val" id="sum-low" style="color:var(--green)">—</span></div>
+            </div>
+            <button class="btn-export primary" id="btn-pdf" disabled>📄 Export PDF Report</button>
+            <button class="btn-export" id="btn-json" disabled>⬇ Download JSON</button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- BOTTOM DASHBOARD -->
-    <div class="dashboard-row">
-      <div class="chart-panel">
-        <div class="chart-panel-header">
-          <span class="chart-panel-title">🎯 Severity Breakdown</span>
-          <div class="severity-legend">
-            <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Critical 🔴</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#eab308"></div>Medium 🟡</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Low 🟢</div>
+        <!-- RIGHT COLUMN: Live Feed -->
+        <div class="panel-right" style="width:100%;">
+          <div class="panel-header">
+            <span class="panel-title"><span>📡</span> Live Feed</span>
+            <span style="font-size:0.72rem;color:var(--text-muted)" id="feed-label">Waiting for run…</span>
+          </div>
+          <div class="stats-bar">
+            <div class="stat-chip total">
+              <span class="stat-value" id="stat-total">0</span>
+              <span class="stat-label">Total</span>
+            </div>
+            <div class="stat-chip passes">
+              <span class="stat-value" id="stat-passes">0</span>
+              <span class="stat-label">Passes ✅</span>
+            </div>
+            <div class="stat-chip crashes">
+              <span class="stat-value" id="stat-crashes">0</span>
+              <span class="stat-label">Crashes 💥</span>
+            </div>
+            <div class="stat-chip rate">
+              <span class="stat-value" id="stat-rate">0%</span>
+              <span class="stat-label">Crash Rate</span>
+            </div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+          </div>
+          <div class="feed-container" id="feed-container">
+            <div class="feed-empty">
+              <div class="feed-empty-icon">📭</div>
+              <p>Run the fuzzer to see live results here</p>
+            </div>
           </div>
         </div>
-        <div class="chart-wrap"><canvas id="severity-chart"></canvas></div>
-      </div>
-      <div class="action-panel">
-        <div class="action-panel-title">📊 Summary</div>
-        <div class="summary-box">
-          <div class="summary-row"><span class="summary-key">Total Inputs</span><span class="summary-val" id="sum-total">—</span></div>
-          <div class="summary-row"><span class="summary-key">Crashes</span><span class="summary-val" id="sum-crashes" style="color:var(--red)">—</span></div>
-          <div class="summary-row"><span class="summary-key">Critical 🔴</span><span class="summary-val" id="sum-critical" style="color:var(--red)">—</span></div>
-          <div class="summary-row"><span class="summary-key">Medium 🟡</span><span class="summary-val" id="sum-medium" style="color:var(--yellow)">—</span></div>
-          <div class="summary-row"><span class="summary-key">Low 🟢</span><span class="summary-val" id="sum-low" style="color:var(--green)">—</span></div>
-        </div>
-        <button class="btn-export primary" id="btn-pdf" disabled>📄 Export PDF Report</button>
-        <button class="btn-export" id="btn-json" disabled>⬇ Download JSON</button>
-      </div>
       </div>
     </div>
   </div>
