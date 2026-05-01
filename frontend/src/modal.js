@@ -1,4 +1,4 @@
-import { API_BASE } from './main.js';
+import { API_BASE, currentMode } from './main.js';
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -42,7 +42,9 @@ export function openModal(item) {
 
 async function fetchExplanation(item) {
   const aiContainer = document.getElementById('modal-ai-text');
-  const code = document.getElementById('code-input').value;
+  const code = currentMode === 'api' 
+    ? document.getElementById('api-url-input').value 
+    : document.getElementById('code-input').value;
   
   try {
     const res = await fetch(`${API_BASE}/explain`, {

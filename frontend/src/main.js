@@ -43,7 +43,15 @@ document.querySelector('#app').innerHTML = `
       <div class="panel-left">
         <div class="panel-header">
           <span class="panel-title" id="input-panel-title"><span>⚡</span> Python Function</span>
-          <button id="btn-clear" style="cursor:pointer;border:none;background:transparent;font-size:0.78rem;color:var(--text-muted);">Clear</button>
+          <div style="display:flex;gap:0.75rem;align-items:center;">
+            <select id="demo-select" style="background:#1a1f2e;border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:0.75rem;padding:0.2rem 0.4rem;cursor:pointer;">
+              <option value="">Load Example...</option>
+              <option value="type">Fragile Code (Type Error)</option>
+              <option value="sql">SQL Injection Risk</option>
+              <option value="loop">Infinite Loop</option>
+            </select>
+            <button id="btn-clear" style="cursor:pointer;border:none;background:transparent;font-size:0.78rem;color:var(--text-muted);">Clear</button>
+          </div>
         </div>
         <div class="url-input-wrap" id="url-input-wrap">
           <div class="url-label">Target API Endpoint</div>
@@ -181,6 +189,41 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
       isApi ? '<span>🌐</span> API Endpoint' : '<span>⚡</span> Python Function';
     validateRunButton();
   });
+});
+
+// ─── Demo Snippets ────────────────────────────────
+const DEMO_SNIPPETS = {
+  type: `def get_user_initial(user_data):
+    # Developer assumes user_data is always a valid string
+    first_letter = user_data[0]
+    return "Initial: " + first_letter.upper()`,
+    
+  sql: `def fetch_database_record(username):
+    # Extremely vulnerable to SQL injection
+    query = "SELECT * FROM users WHERE username = '" + username + "'"
+    
+    # Simulate a crash if a hacker uses a semicolon or quote
+    if ";" in query or "DROP" in query.upper():
+        raise ValueError("CRITICAL: SQL Injection Detected in execution engine!")
+        
+    return query`,
+    
+  loop: `def process_data(data):
+    # If the fuzzer passes a string with no numbers, this loops forever!
+    count = 0
+    while type(data) == str and str(count) not in data:
+        pass # Infinite loop happens here!
+        
+    return "Done"`
+};
+
+document.getElementById('demo-select').addEventListener('change', (e) => {
+  if (e.target.value && DEMO_SNIPPETS[e.target.value]) {
+    codeInput.value = DEMO_SNIPPETS[e.target.value];
+    updateLineNumbers();
+    validateRunButton();
+    e.target.value = ''; // Reset the dropdown visually
+  }
 });
 
 // ─── Clear ─────────────────────────────────────────
@@ -325,8 +368,12 @@ document.getElementById('btn-pdf').addEventListener('click', async () => {
 
 // ─── Fuzzing Logic ─────────────────────────────────
 document.getElementById('btn-run').addEventListener('click', async () => {
+  const isApi = currentMode === 'api';
   const code = codeInput.value.trim();
-  if (!code) return;
+  const targetUrl = document.getElementById('api-url-input').value.trim();
+  
+  if (isApi && !targetUrl) return;
+  if (!isApi && !code) return;
   
   const count = parseInt(document.getElementById('fuzz-count').value, 10);
   const aiExplain = document.getElementById('ai-toggle').checked;
@@ -340,10 +387,15 @@ document.getElementById('btn-run').addEventListener('click', async () => {
   const results = [];
   
   try {
-    const res = await fetch(`${API_BASE}/fuzz-code-stream`, {
+    const endpoint = isApi ? '/fuzz-api-stream' : '/fuzz-code-stream';
+    const bodyPayload = isApi 
+      ? { target_url: targetUrl, inputs_count: count }
+      : { code, inputs_count: count, ai_explain: aiExplain };
+
+    const res = await fetch(`${API_BASE}${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, inputs_count: count, ai_explain: aiExplain })
+      body: JSON.stringify(bodyPayload)
     });
 
     if (!res.ok) throw new Error(`Server returned ${res.status}`);

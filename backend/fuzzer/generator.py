@@ -76,3 +76,35 @@ def generate_fuzz_inputs(count: int = 50) -> list:
 
     random.shuffle(pool)
     return pool[:count]
+
+def generate_api_payloads(count: int = 50) -> list:
+    """Return `count` string/JSON fuzz payloads specifically for hitting API endpoints."""
+    import json
+    # Convert static non-string items to JSON strings where applicable, and keep string payloads
+    api_pool = []
+    for item in _STATIC:
+        if isinstance(item, str):
+            api_pool.append(item)
+        elif item is None or isinstance(item, (int, float, bool, list, dict)):
+            try:
+                api_pool.append(json.dumps(item))
+            except (TypeError, ValueError):
+                api_pool.append(str(item))
+        else:
+            api_pool.append(str(item))
+            
+    # Add some API specific headers/bodies
+    api_specific = [
+        '{"admin": true}',
+        '{"username": "admin", "password": ""}',
+        '<?xml version="1.0" encoding="ISO-8859-1"?><!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]><foo>&xxe;</foo>', # XXE
+        '{"id": "../../../../etc/passwd"}',
+    ]
+    api_pool.extend(api_specific)
+
+    # Pad with random items
+    while len(api_pool) < count:
+        api_pool.append(random.choice(api_pool))
+
+    random.shuffle(api_pool)
+    return api_pool[:count]
