@@ -202,15 +202,22 @@ body {
   align-items: center;
   justify-content: center;
 }
+/* Unified Panel Styling to block out background animations */
+.panel-left, .chart-panel, .action-panel, .panel-right {
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  border: 1px solid rgba(124,106,255,0.2);
+  background: rgba(11, 14, 23, 0.95);
+  backdrop-filter: blur(24px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 #page-config .panel-left {
   width: 100%;
   max-width: 900px;
   height: 70vh;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  border: 1px solid rgba(124,106,255,0.2);
-  background: rgba(15,19,32,0.85);
-  backdrop-filter: blur(20px);
 }
 
 .panels-row {
@@ -222,19 +229,23 @@ body {
 /* =============================================
    LEFT PANEL — Input
    ============================================= */
-.panel-left {
-  display: flex; flex-direction: column;
-  overflow: hidden;
-}
 
-.panel-header {
+.panel-header, .chart-panel-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border);
   background: var(--bg-glass);
   flex-shrink: 0;
 }
-.panel-title {
+.action-panel-title {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-glass);
+  font-size: 0.8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.panel-title, .chart-panel-title {
   font-size: 0.8rem; font-weight: 600;
   text-transform: uppercase; letter-spacing: 0.08em;
   color: var(--text-muted);
@@ -348,11 +359,6 @@ body {
 /* =============================================
    RIGHT PANEL — Live Feed
    ============================================= */
-.panel-right {
-  display: flex; flex-direction: column;
-  overflow: hidden;
-  background: var(--bg-base);
-}
 
 /* Stats bar */
 .stats-bar {
