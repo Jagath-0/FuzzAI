@@ -67,6 +67,27 @@ body {
   100% { transform: perspective(600px) rotateX(75deg) translateY(60px) translateZ(-200px); }
 }
 
+.grid-warp {
+  animation: gridMove 1.5s linear infinite !important;
+  filter: brightness(1.5) contrast(1.2);
+}
+
+.scanner-line {
+  position: absolute;
+  top: 0; left: 0; width: 100vw; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent);
+  opacity: 0.6;
+  z-index: -1;
+  animation: scanScreen 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanScreen {
+  0% { transform: translateY(-10vh); }
+  100% { transform: translateY(110vh); }
+}
+
 .bg-orb {
   position: absolute;
   width: 800px;

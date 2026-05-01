@@ -18,6 +18,7 @@ let severityChart = null;
 // ─── App Shell ────────────────────────────────────
 document.querySelector('#app').innerHTML = `
   <div class="cyber-grid"></div>
+  <div class="scanner-line"></div>
   <div class="bg-orb bg-orb-1"></div>
   <div class="bg-orb bg-orb-2"></div>
   
@@ -321,8 +322,10 @@ export function setProgress(pct) {
 export function setRunning(val) {
   isRunning = val;
   const btn = document.getElementById('btn-run');
+  const grid = document.querySelector('.cyber-grid');
   btn.classList.toggle('running', val);
   btn.disabled = val;
+  grid?.classList.toggle('grid-warp', val);
   if (!val) validateRunButton();
 }
 
