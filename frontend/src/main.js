@@ -7,7 +7,7 @@ import { generatePdf } from './pdf.js';
 
 Chart.register(ArcElement, Tooltip, Legend, PieController);
 
-export const API_BASE = 'http://localhost:8000';
+export const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
 
 // ─── State ────────────────────────────────────────
 export let currentMode = 'code';
